@@ -5,6 +5,7 @@ var workbook = new Excel.Workbook();
 const axios = require("axios");
 const path = require("path");
 
+// uisng the link provided to fetch the price of all products
 const fetchCall = async (productId) => {
   let price = -1;
   await axios
@@ -18,6 +19,7 @@ const fetchCall = async (productId) => {
   return price === -1 ? "NA" : price;
 };
 
+// this function finds the price of each product ans updates their price in the xlsx file
 exports.uploadXlsx = (req, res, next) => {
   if (req.file) {
     let fileName = req.file.originalname;
@@ -37,6 +39,8 @@ exports.uploadXlsx = (req, res, next) => {
       await workbook.xlsx.writeFile(
         __dirname + `/uploads/${req.file.originalname}`
       );
+
+      // sending the file after updating it
       return res.sendFile(__dirname + `/uploads/${req.file.originalname}`);
     });
 };
