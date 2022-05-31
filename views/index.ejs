@@ -1,0 +1,10 @@
+<div class="main-container">
+    <h3>MY xlsx Home Page</h3>
+    <div id="file-uploder">
+        <form action="api/v1/xlsx/upload" enctype="multipart/form-data" method="POST">
+            <input type="file" name="file" accept="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+                placeholder="Upload xlsx File" />
+            <input type="submit" value="Upload" class="btn" />
+        </form>
+    </div>
+</div>
