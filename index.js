@@ -1,4 +1,6 @@
 const express = require("express");
+const dotenv = require("dotenv");
+dotenv.config({ path: ".env" });
 const uploadController = require("./uploadController");
 const multer = require("multer");
 const path = require("path");
@@ -13,6 +15,7 @@ app.use("/uploads", express.static(__dirname + "/uploads"));
 app.set("view engine", "ejs");
 app.set("views", "./views");
 
+//defining storage options for multer to store files
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, "/", "uploads/"));
@@ -23,6 +26,7 @@ var storage = multer.diskStorage({
   },
 });
 
+// upload function to upload the input file
 var upload = multer({
   storage: storage,
   fileFilter: function (req, file, callback) {
@@ -35,22 +39,26 @@ var upload = multer({
   },
 });
 
+// hompage to get simple html form for uploading thre file
 app.get("/", (req, res) => {
   res.render("index");
 });
 
+// making a post request to upload the the file and then updating it and the returning to user
 app.post(
   "/api/v1/xlsx/upload",
   upload.single("file"),
   uploadController.uploadXlsx
 );
 
+// any other route is not defined
 app.all("*", (req, res) => {
   res.status(404).json({
     mesg: "route not defined",
   });
 });
 
-app.listen(3000, () => {
+const port = process.env.PORT || 3000;
+app.listen(port, () => {
   console.log(`Server Started at ${3000}`);
 });
